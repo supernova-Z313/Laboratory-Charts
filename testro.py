@@ -73,7 +73,7 @@ from matplotlib.ticker import NullFormatter, FixedLocator
 # Fixing random state for reproducibility
 np.random.seed(19680801)
 
-# make up some data in the interval ]0, 1[
+# make up some data in the interval [0, 1]
 y = np.random.normal(loc=0.5, scale=0.4, size=1000)
 y = y[(y > 0) & (y < 1)]
 y.sort()
@@ -147,6 +147,7 @@ ax = axs[2, 1]
 t = np.arange(0, 170.0, 0.1)
 s = t / 2.
 
+# ax.plot(t, s, 'o')
 ax.plot(t, s, '-', lw=2)
 
 ax.set_yscale('function', functions=(forward, inverse))
