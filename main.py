@@ -17,6 +17,9 @@ class Matplot:
             self.data = [0, 0]
         else:
             self.data = data
+        self.turn = 0
+        self.fig = None
+        self.axs = None
 
     # ====================================================================
     def set_data(self, **kwarg):
@@ -50,12 +53,14 @@ class Matplot:
                     turn += 1
                     length += kwarg["Triangular"][4]
 
-                if length < kwarg["Triangular"][1]:
+                if length > kwarg["Triangular"][1]:
+                    length -= kwarg["Triangular"][4]
                     x_points.append(kwarg["Triangular"][1])
                     if turn % 2 == 0:
-                        y_points.append(kwarg["Triangular"][2]-(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][2]-(slop*abs(length-kwarg["Triangular"][1])))
                     else:
-                        y_points.append(kwarg["Triangular"][3]+(slop*(length-kwarg["Triangular"][1])))
+                        # print("e", length, kwarg["Triangular"][1], slop, kwarg["Triangular"][3])
+                        y_points.append(kwarg["Triangular"][3]+(slop*abs(length-kwarg["Triangular"][1])))
 
             elif kwarg["Triangular"][6] == "top" and kwarg["Triangular"][5] == kwarg["Triangular"][2]:
                 length = (abs(kwarg["Triangular"][3]-kwarg["Triangular"][5])/slop)+kwarg["Triangular"][0]
@@ -71,12 +76,13 @@ class Matplot:
                         y_points.append(kwarg["Triangular"][3])
                     length += kwarg["Triangular"][4]
 
-                if length < kwarg["Triangular"][1]:
+                if length > kwarg["Triangular"][1]:
+                    length -= kwarg["Triangular"][4]
                     x_points.append(kwarg["Triangular"][1])
                     if turn % 2 == 0:
-                        y_points.append(kwarg["Triangular"][3]+(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][3]+(slop*abs(length-kwarg["Triangular"][1])))
                     else:
-                        y_points.append(kwarg["Triangular"][2]-(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][2]-(slop*abs(length-kwarg["Triangular"][1])))
 
             elif kwarg["Triangular"][6] == "down" and kwarg["Triangular"][5] != kwarg["Triangular"][3]:
                 length = (abs(kwarg["Triangular"][3]-kwarg["Triangular"][5])/slop)+kwarg["Triangular"][0]
@@ -92,12 +98,13 @@ class Matplot:
                         y_points.append(kwarg["Triangular"][3])
                     length += kwarg["Triangular"][4]
 
-                if length < kwarg["Triangular"][1]:
+                if length > kwarg["Triangular"][1]:
+                    length -= kwarg["Triangular"][4]
                     x_points.append(kwarg["Triangular"][1])
                     if turn % 2 == 0:
-                        y_points.append(kwarg["Triangular"][3]+(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][3]+(slop*abs(length-kwarg["Triangular"][1])))
                     else:
-                        y_points.append(kwarg["Triangular"][2]-(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][2]-(slop*abs(length-kwarg["Triangular"][1])))
 
             elif kwarg["Triangular"][6] == "down" and kwarg["Triangular"][5] != kwarg["Triangular"][3]:
                 length = (abs(kwarg["Triangular"][2]-kwarg["Triangular"][5])/slop)+kwarg["Triangular"][0]
@@ -114,12 +121,13 @@ class Matplot:
                     turn += 1
                     length += kwarg["Triangular"][4]
 
-                if length < kwarg["Triangular"][1]:
+                if length > kwarg["Triangular"][1]:
+                    length -= kwarg["Triangular"][4]
                     x_points.append(kwarg["Triangular"][1])
                     if turn % 2 == 0:
-                        y_points.append(kwarg["Triangular"][2]-(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][2]-(slop*abs(length-kwarg["Triangular"][1])))
                     else:
-                        y_points.append(kwarg["Triangular"][3]+(slop*(length-kwarg["Triangular"][1])))
+                        y_points.append(kwarg["Triangular"][3]+(slop*abs(length-kwarg["Triangular"][1])))
 
             print(x_points)
             print(y_points)
@@ -145,24 +153,27 @@ class Matplot:
 
     # ====================================================================
     def plot(self, clear: bool = True, grid: bool = True, dots: str = "-", ls: str = "-", **kwargs):
-        fig = plt.figure(clear=clear)
-        ax0 = fig.subplots(1, 1)
+        if self.turn == 0:
+            self.fig = plt.figure(clear=clear)
+            self.axs = self.fig.subplots(1, 1)
+            self.turn += 1
+
         if kwargs.get("title"):
-            ax0.set_title(kwargs["title"])
+            self.axs.set_title(kwargs["title"])
         if kwargs.get("x_label"):
-            ax0.set_xlabel(kwargs["x_label"])
+            self.axs.set_xlabel(kwargs["x_label"])
         if kwargs.get("y_label"):
-            ax0.set_ylabel(kwargs["y_label"])
+            self.axs.set_ylabel(kwargs["y_label"])
         if kwargs.get("x_scale"):
-            ax0.set_xscale(kwargs["x_scale"])
+            self.axs.set_xscale(kwargs["x_scale"])
         if kwargs.get("y_scale"):
-            ax0.set_yscale(kwargs["y_scale"])
-        if grid:
-            ax0.grid()
+            self.axs.set_yscale(kwargs["y_scale"])
+        # if grid:   ////////////////////////////////////////////////////////////
+        self.axs.grid()
         if kwargs.get("plot_arg"):
-            ax0.plot(self.data[0][0], self.data[0][1], dots, ls=ls, lw=2, *kwargs["plot_arg"])
+            self.axs.plot(self.data[0][0], self.data[0][1], dots, ls=ls, lw=2, *kwargs["plot_arg"])
         else:
-            ax0.plot(self.data[0][0], self.data[0][1], dots, ls=ls, lw=2)  # , color="green"
+            self.axs.plot(self.data[0][0], self.data[0][1], dots, ls=ls, lw=2)  # , color="green"
 
     # ====================================================================
     def multi_plot(self, ):
@@ -181,6 +192,7 @@ def main():
     command = int(input())
     os.system("clear")
     test = Matplot()
+    plot_turn = 0  # now
     while command != 0:
         if command == 1:
             print("(1)Do you want to enter data manually?\n(2)or import from (CSV) file?")
@@ -219,7 +231,7 @@ def main():
                     end_x = float(input("Enter the horizontal coordinates of the end point of the graph:"))
                     top_y = float(input("Enter the maximum vertical value of the chart:"))
                     down_y = float(input("Enter the lowest vertical value of the graph:"))
-                    distance = float(input("Enter the distance between two vertical peaks:"))/2
+                    distance = float(input("Enter the half distance between two vertical peaks:"))
                     start_point_y = float(input("Enter the vertical coordinates of the starting point:"))
                     first_peak = int(input("The initial direction of the table is upwards."
                                            " Enter 1 if you want to change the direction, otherwise enter 0."))
@@ -233,11 +245,17 @@ def main():
                 pass
 
         elif command == 2:
-            tit = input("enter the title of graph:\n")
-            x_l = input("enter the x label:")
-            y_l = input("enter the y label:")
+            if plot_turn == 0:
+                tit = input("enter the title of graph:\n")
+                x_l = input("enter the x label:")
+                y_l = input("enter the y label:")
+                plot_turn += 1
+            dot = input("enter color and o:")
             os.system("clear")
-            test.plot(clear=True, dots="o", title=tit, x_label=x_l, y_label=y_l)
+            # if plot_turn == 0:
+            test.plot(clear=True, dots=dot, title=tit, x_label=x_l, y_label=y_l)
+            # else:
+            #     test.plot(clear=False, dots=dot, title=tit, x_label=x_l, y_label=y_l)
 
         elif command == 3:
             test.show()
