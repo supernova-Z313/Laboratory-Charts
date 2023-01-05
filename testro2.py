@@ -18,7 +18,10 @@ ax.grid(True)
 
 plt.show()
 
-
+# x = [1, 2, 3, 4, 5, 6, 7, 8]
+# y = np.sin(x)
+# plt.plot(x, y, "o", ls="-", ms=4)
+# plt.show()
 # ==========================================
 """ for morabaei shape get one state top one but tol har khat , baze v generate them"""
 """
