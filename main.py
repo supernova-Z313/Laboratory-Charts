@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 class Matplot:
@@ -74,10 +75,50 @@ class Matplot:
 
 # ====================================================================
 def main():
+    print("Hello Welcome to lab:")
+    print("Select the desired option: \n(1)data entry\t(2)Plot Data\t(3)Draw the result\n(0)Exit")
+    command = int(input())
+    os.system("clear")
     test = Matplot()
-    test.set_data(Liner=[[1, 2, 5], [3, 6, 8]])
-    test.plot(clear=True, dots="o", title="hello")
-    test.show()
+    while command != 0:
+        if command == 1:
+            print("(1)Do you want to enter data manually?\n(2)or import from (CSV) file?")
+            command = int(input())
+            if command == 1:
+                os.system("clear")
+                print("Select the final chart type:\n(1)Linear graph\t(2)Sine graph\n(3)Log chart\t(4)Radical diagram\n"
+                      "(5)ASinH graph")
+                command = int(input())
+                os.system("clear")
+                if command == 1:
+                    print("Enter the length of the graph points separated by a space. (like: 1 2 3)")
+                    xs = list(map(float, input().split()))
+                    os.system("clear")
+                    print("Enter the width of the graph points separated by a space.")
+                    ys = list(map(float, input().split()))
+                    os.system("clear")
+                    test.set_data(Liner=[xs, ys])
+                elif command == 2:
+                    pass
+                elif command == 3:
+                    pass
+                elif command == 4:
+                    pass
+                elif command == 5:
+                    pass
+            elif command == 2:
+                pass
+        elif command == 2:
+            print("enter the title of graph:")
+            tit = input()
+            os.system("clear")
+            test.plot(clear=True, dots="o", title=tit)
+        elif command == 3:
+            test.show()
+        os.system("clear")
+        print("Select the desired option: \n(1)data entry\t(2)Plot Data\t(3)Draw the result\n(0)Exit")
+        command = int(input())
+        os.system("clear")
 
 
 # ====================================================================
