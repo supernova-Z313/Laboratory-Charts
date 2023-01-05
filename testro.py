@@ -86,6 +86,7 @@ fig, axs = plt.subplots(3, 2, figsize=(6, 8),
 # linear
 ax = axs[0, 0]
 ax.plot(x, y)
+ax.set_xlabel("xss")
 ax.set_yscale('linear')
 ax.set_title('linear')
 ax.grid(True)
@@ -158,3 +159,4 @@ ax.yaxis.set_minor_formatter(NullFormatter())
 ax.yaxis.set_major_locator(FixedLocator(np.arange(0, 90, 10)))
 
 plt.show()
+

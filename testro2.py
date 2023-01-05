@@ -17,3 +17,13 @@ ax.set_title('linear')
 ax.grid(True)
 
 plt.show()
+
+
+# ==========================================
+""" for morabaei shape get one state top one but tol har khat , baze v generate them"""
+"""
+https://matplotlib.org/stable/gallery/scales/scales.html#sphx-glr-gallery-scales-scales-py
+https://matplotlib.org/stable/gallery/lines_bars_and_markers/markevery_demo.html#sphx-glr-gallery-lines-bars-and-markers-markevery-demo-py
+https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_yscale.html
+"""
+
